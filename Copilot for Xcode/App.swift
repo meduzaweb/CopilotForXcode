@@ -158,8 +158,7 @@ class AppUpdateCheckerDelegate: UpdateCheckerDelegate {
 
 @main
 struct CopilotForXcodeApp: App {
-    @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
-    
+    @NSApplicationDelegateAdaptor private vale
     init() {
         UserDefaults.setupDefaultSettings()
         
