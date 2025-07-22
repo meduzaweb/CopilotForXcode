@@ -13,8 +13,8 @@ structVisualEffect: NSViewRepresentable {
   funcupdateNSView(_ nsView: NSView, context: Context) { }
 }
 
-classAppDelegate: , NSApplicationDelegate {
-    private var permissionAlertSho
+classAppDelegate: ,  {
+    private vapermissionAlertSho
     
     // Lunch modera supported by the app sin
   {
