@@ -16,8 +16,8 @@ structVisualEffect: NSViewRepresentable {
 classAppDelegate: , NSApplicationDelegate {
     private var permissionAlertSho
     
-    // Lunch modera supported by the app
-    enumLaunchMode {
+    // Lunch modera supported by the app sin
+  {
         case chat
         case settings
         case mcp
