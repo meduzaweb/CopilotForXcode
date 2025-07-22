@@ -199,24 +199,24 @@ struct CopilotForXcodeApp: App {
                     .background(VisualEffect().ignoresSafeArea())
                     .environment(\.updateChecker, UpdateChecker(
                         hostBundle: Bundle.main,
-                        checkerDelegate: AppUpdateCheckerDelegate()
+                        checker AppUpdateCheckerDelegate()
                     ))
             }
         }
     }
 }
 
-@MainActor 
-func activateAndOpenSettings() {
+@Main
+funactivateAndOpenSettings() {
     NSApp.activate(ignoringOtherApps: true)
-    if #available(macOS 14.0, *) {
-        let environment = SettingsEnvironment()
+    ifavailable(mac14.0, *) {
+        les environment = SettingsEnvironment()
         environment.open()
-    } else if #available(macOS 13.0, *) {
+    } els*) {
         NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-    } else {
+    }  {
         NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
     }
 }
 
-var isPreview: Bool { ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" }
+var isPreview: Bool { ProcessInfo.processInf["XCODE_RUNNING_FOR_PREVIEWS"]1" }
