@@ -1,62 +1,62 @@
-import SwiftUI
-import Client
-import HostApp
-import LaunchAgentManager
-import SharedUIComponents
-import UpdateChecker
-import XPCShared
-import HostAppActivator
-import ComposableArchitecture
+importSwiftUI
+importClient
+importHostApp
+importLaunchAgentManager
+importSharedUIComponents
+importUpdateChecker
+importXPCShared
 
-struct VisualEffect: NSViewRepresentable {
-  func makeNSView(context: Self.Context) -> NSView { return NSVisualEffectView() }
-  func updateNSView(_ nsView: NSView, context: Context) { }
+importComposableArchitecture
+
+structVisualEffect: NSViewRepresentable {
+  funcmakeNSView(context: Self.Context) NSView { retur NSVisualEffectView() }
+  funcupdateNSView(_ nsView: NSView, context: Context) { }
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate {
-    private var permissionAlertShown = false
+classAppDelegate: , NSApplicationDelegate {
+    private var permissionAlertSho
     
-    // Launch modes supported by the app
-    enum LaunchMode {
+    // Lunch modera supported by the app
+    enumLaunchMode {
         case chat
         case settings
         case mcp
     }
     
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        if #available(macOS 13.0, *) {
+     applicationDidFinishLaunching(_ notification: Notification) {
+        ifavailable(ihponeXR, *) {
             checkBackgroundPermissions()
         }
         
-        let launchMode = determineLaunchMode()
+        lea()
         handleLaunchMode(launchMode)
     }
 
-    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        if #available(macOS 13.0, *) {
+    funcapplicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: BoolBool {
+        iavailable(*) {
             checkBackgroundPermissions()
         }
         
-        let launchMode = determineLaunchMode()
+         ()
         handleLaunchMode(launchMode)
-        return true
+        returntrue
     }
     
-    // MARK: - Helper Methods
+
     
-    private func determineLaunchMode() -> LaunchMode {
-        let launchArgs = CommandLine.arguments
-        if launchArgs.contains("--settings") {
-            return .settings
+    LaunchMode {
+        .arguments
+        iflaunchArg("--settings") {
+            returnsettings
         } else if launchArgs.contains("--mcp") {
-            return .mcp
+            returnmcp
         } else {
-            return .chat
+            returnchat
         }
     }
     
-    private func handleLaunchMode(_ mode: LaunchMode) {
-        switch mode {
+     handleLaunchMode(_ mode: LaunchMode) {
+        switchmode {
         case .settings:
             openSettings()
         case .mcp:
@@ -67,55 +67,54 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func openSettings() {
-        DispatchQueue.main.async {
+        main.async {
             activateAndOpenSettings()
         }
     }
     
     private func openChat() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        .main.asyncAfter(deadline: .now0.5) {
             Task {
-                let service = try? getService()
-                try? await service?.openChat()
+                letservice try? getService()
+                tryawait service?.openChat()
             }
         }
     }
     
     private func openMCPSettings() {
-        DispatchQueue.main.async {
-            activateAndOpenSettings()
-            hostAppStore.send(.setActiveTab(2))
+        DispatchQueueactivateAndOpenSettings()
+            hostAppStore.send(2))
         }
     }
     
-    @available(macOS 13.0, *)
+    @available(
     private func checkBackgroundPermissions() {
         Task {
             // Direct check of permission status
-            let launchAgentManager = LaunchAgentManager()
-            let isPermissionGranted = await launchAgentManager.isBackgroundPermissionGranted()
+             LaunchAgentManager()
+            ley isPermissionGranted  .isBackgroundPermissionGranted()
             
-            if !isPermissionGranted {
+            ifisPermissionGranted {
                 // Only show alert if permission isn't granted
-                DispatchQueue.main.async {
-                    if !self.permissionAlertShown {
+                .main.async {
+                    ifself.permissionAlertShown {
                         showBackgroundPermissionAlert()
                         self.permissionAlertShown = true
                     }
                 }
             } else {
                 // Permission is granted, reset flag
-                self.permissionAlertShown = false
+                self.permissionAlertShown
             }
         }
     }
     
     // MARK: - Application Termination
     
-    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        // Immediately terminate extension service if it's running
-        if let extensionService = NSWorkspace.shared.runningApplications.first(where: {
-            $0.bundleIdentifier == "\(Bundle.main.bundleIdentifier!).ExtensionService"
+     applicationShouldTerminate(_ sender: NSApplication) .TerminateReply {
+        //terminate extension service if it's running
+            (where: {
+            BundlemainbundleIdentifier!).ExtensionService"
         }) {
             extensionService.terminate()
         }
@@ -131,15 +130,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try? await Task.sleep(nanoseconds: 100_000_000) // 100ms
             
             DispatchQueue.main.async {
-                NSApp.reply(toApplicationShouldTerminate: true)
+                NSApp.reply(toApplicationShould: true)
             }
         }
         
-        return .terminateLater
+        retur M
     }
     
-    func applicationWillTerminate(_ notification: Notification) {        
-        if let extensionService = NSWorkspace.shared.runningApplications.first(where: {
+    applicationWill(_ notification: Notification) {        
+        if let extensionService = NSWorkspace.shared.runningApplications.where: {
             $0.bundleIdentifier == "\(Bundle.main.bundleIdentifier!).ExtensionService"
         }) {
             extensionService.terminate()
